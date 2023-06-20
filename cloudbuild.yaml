@@ -12,21 +12,25 @@ options:
 steps:
 - name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: 'bash'
+  secretEnv: ['PASSWORD']
+  availableSecrets:
+    secretManager:
+    - versionName: projects/$PROJECT_ID/secrets/destination-password/1
+      env: 'PASSWORD'
   args:
   - -c
   - |
     apt update
     apt install -y mysql-client
-    PASSWORD=$(gcloud secrets versions access latest --secret="destination-password")
     # Check if sql instance is connecting
-    if mysql -u ${_USER} -p$PASSWORD -h ${_EIP} ${_DATABASE} -e "SHOW TABLES;" > /dev/null 2>&1; then
+    if mysql -u ${_USER} -p$$PASSWORD -h ${_EIP} ${_DATABASE} -e "SHOW TABLES;" > /dev/null 2>&1; then
       echo "${_DATABASE} instance is connected."
     else
       echo "${_DATABASE} instance is not connected."
     fi
 
     # Connect to the database and execute the queries
-      mysql -v -u ${_USER} -p$PASSWORD -h ${_EIP} ${_DATABASE} <<'EOF'
+      mysql -v -u ${_USER} -p$$PASSWORD -h ${_EIP} ${_DATABASE} <<'EOF'
       alter table destination_db.users
       drop column latest_passwords;
 
