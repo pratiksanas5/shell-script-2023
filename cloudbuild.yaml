@@ -4,6 +4,7 @@ substitutions:
   _USER: "destination_user"
   _EIP: "35.200.175.180"
   _DATABASE: "destination_db"
+  _PROJECT_ID: "pratik-demo8569"
 
 options:
   substitution_option: 'ALLOW_LOOSE'
@@ -15,7 +16,7 @@ steps:
   secretEnv: ['PASSWORD']
   availableSecrets:
     secretManager:
-    - versionName: projects/$PROJECT_ID/secrets/destination-password/1
+    - versionName: projects/${_PROJECT_ID}/secrets/destination-password/1
       env: 'PASSWORD'
   args:
   - -c
