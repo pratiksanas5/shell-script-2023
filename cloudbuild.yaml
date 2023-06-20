@@ -11,11 +11,13 @@ options:
   dynamic_substitutions: true
 
 steps:
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+- name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: 'bash'
   args:
   - -c
   - |
+    apt update
+    apt install -y mysql-client
     # Check if sql instance is connecting
     if mysql -u ${_USER} -p${_PASSWORD} -h ${_EIP} ${_DATABASE} -e "SHOW TABLES;" > /dev/null 2>&1; then
       echo "${_DATABASE} instance is connected."
