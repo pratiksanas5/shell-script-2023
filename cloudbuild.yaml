@@ -14,15 +14,12 @@ steps:
 - name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: 'bash'
   secretEnv: ['PASSWORD']
-  availableSecrets:
-    secretManager:
-    - versionName: projects/${_PROJECT_ID}/secrets/destination-password/1
-      env: 'PASSWORD'
   args:
   - -c
   - |
     apt update
     apt install -y mysql-client
+    export PASSWORD=$(gcloud secrets versions access 1 --secret="destination-password" --project=${_PROJECT_ID})
     # Check if sql instance is connecting
     if mysql -u ${_USER} -p$$PASSWORD -h ${_EIP} ${_DATABASE} -e "SHOW TABLES;" > /dev/null 2>&1; then
       echo "${_DATABASE} instance is connected."
