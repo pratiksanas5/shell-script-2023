@@ -96,5 +96,5 @@ steps:
     EOF
 availableSecrets:
   secretManager:
-  - versionName: projects/14794876278/secrets/SECRET_ONE
+  - versionName: projects/14794876278/secrets/destination-password/1
     env: 'PASSWORD'
