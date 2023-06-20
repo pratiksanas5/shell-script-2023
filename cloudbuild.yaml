@@ -2,7 +2,7 @@ timeout: 3600s
 
 substitutions:
   _USER: "destination_user"
-  _GCPIG: "destination@123"
+  _PASSWORD: "destination@123"
   _EIP: "35.200.175.180"
   _DATABASE: "destination_db"
 
