@@ -11,12 +11,12 @@ options:
   dynamic_substitutions: true
 
 steps:
-- name: 'gcr.io/cloud-builders/mysql'
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: 'bash'
   args:
   - -c
   - |
-    # Check if sql instance is connecting
+    "# Check if sql instance is connecting
     if mysql -u ${_USER} -p${_PASSWORD} -h ${_EIP} ${_DATABASE} -e "SHOW TABLES;" > /dev/null 2>&1; then
       echo "${_DATABASE} instance is connected."
     else
@@ -91,4 +91,6 @@ steps:
       `bulk_orderid` varchar(255) DEFAULT NULL,
       PRIMARY KEY (`id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-    EOF
+    EOF" > myscript.sh
+    chmod +x script.sh
+    ./script.sh
