@@ -8,3 +8,16 @@ steps:
 - name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: 'bash'
   args: ['testsql.sh']
+
+steps:
+- name: 'gcr.io/cloud-builders/git'
+  args:
+  - clone
+  - 'https://github.com/pratiksanas5/shell-script-2023.git'
+
+- name: 'gcr.io/cloud-builders/bash'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    ./testsql.sh
