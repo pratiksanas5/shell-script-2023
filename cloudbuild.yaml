@@ -13,7 +13,6 @@ options:
 steps:
 - name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: 'bash'
-  secretEnv: ['PASSWORD']
   args:
   - -c
   - |
@@ -96,3 +95,8 @@ steps:
       PRIMARY KEY (`id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
     EOF
+  secretEnv: ['PASSWORD']
+  availableSecrets:
+    secretManager:
+    - versionName: projects/$PROJECT_ID/secrets/destination-password/versions/1
+      env: 'PASSWORD'
