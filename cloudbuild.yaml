@@ -11,7 +11,7 @@ options:
   dynamic_substitutions: true
 
 steps:
-- name: 'gcr.io/cloud-builders/bash:1.0'
+- name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: 'bash'
   args:
   - -c
