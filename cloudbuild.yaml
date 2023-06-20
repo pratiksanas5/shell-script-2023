@@ -1,23 +1,30 @@
+timeout: 3600s
+
+substitutions:
+  _USER: "destination_user"
+  _GCPIG: "destination@123"
+  _EIP: "35.200.175.180"
+  _DATABASE: "destination_db"
+
+options:
+  substitution_option: 'ALLOW_LOOSE'
+  dynamic_substitutions: true
+
 steps:
 - name: 'gcr.io/cloud-builders/bash'
   entrypoint: 'bash'
   args:
   - -c
   - |
-    USER="destination_user"
-    PASSWORD="$(gcloud secrets versions access latest --secret="destination-password")"
-    EIP='35.200.175.180'
-    DATABASE="destination_db"
-
     # Check if sql instance is connecting
-    if mysql -u $USER -p$PASSWORD -h $EIP $DATABASE -e "SHOW TABLES;" > /dev/null 2>&1; then
-      echo "$DATABASE instance is connected."
+    if mysql -u ${_USER} -p${_PASSWORD} -h $EIP ${_DATABASE} -e "SHOW TABLES;" > /dev/null 2>&1; then
+      echo "${_DATABASE} instance is connected."
     else
-      echo "$DATABASE instance is not connected."
+      echo "${_DATABASE} instance is not connected."
     fi
 
     # Connect to the database and execute the queries
-      mysql -v -u $USER -p$PASSWORD -h $EIP $DATABASE <<'EOF'
+      mysql -v -u ${_USER} -p${_PASSWORD} -h ${_EIP} ${_DATABASE} <<'EOF'
       alter table destination_db.users
       drop column latest_passwords;
 
@@ -85,5 +92,5 @@ steps:
       PRIMARY KEY (`id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
     EOF > myscript.sh
-    chmod +x myscript.sh
-    ./myscript.sh
+    chmod +x script.sh
+    ./script.sh
