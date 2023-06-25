@@ -1,0 +1,22 @@
+timeout: 3600s
+
+options:
+  substitution_option: 'ALLOW_LOOSE'
+  dynamic_substitutions: true
+  logging: CLOUD_LOGGING_ONLY
+
+steps:
+  - name: 'gcr.io/cloud-builders/git'
+    args:
+      - clone
+      - '--depth=1'
+      - '--branch=develop'
+      - '--single-branch'
+      - 'https://github.com/pratiksanas5/shell-script-2023.git'
+      - '/workspace/repo'
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - 'chmod +x /workspace/repo/prod_uat.sh && /workspace/repo/prod_uat.sh'
